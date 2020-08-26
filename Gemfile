@@ -65,3 +65,8 @@ gem 'pry-rails', :group => :development
 group :test do
   gem 'shoulda-matchers', '~> 4.0'
 end
+
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+end

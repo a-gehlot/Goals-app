@@ -31,7 +31,7 @@ class GoalsController < ApplicationController
 
     respond_to do |format|
       if @goal.save
-        format.html { redirect_to @goal, notice: 'Goal was successfully created.' }
+        format.html { redirect_to user_goal(@goal), notice: 'Goal was successfully created.' }
         format.json { render :show, status: :created, location: @goal }
       else
         flash[:errors] = @goal.errors.full_messages
