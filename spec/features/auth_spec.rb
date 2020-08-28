@@ -14,21 +14,36 @@ describe 'the signup process' do
         click_button 'Sign up'
         expect(page).to have_current_path('/users')
     end
-    it 'shows username on the homepage after signup' do
-        expect(page).to have_content 'user@example.com'
-    end
 
   end
 end
 
-feature 'logging in' do
-  scenario 'shows username on the homepage after login'
+describe 'logging in' do
+  it 'shows username on the homepage after login' do
+    user = FactoryBot.create(:user)
+    visit '/users/sign_in'
+    fill_in 'Email', with: "#{user.email}"
+    fill_in 'Password', with: "#{user.password}"
+    click_button 'Log in'
+    expect(page).to have_content 'user@example.com'
+  end
 
 end
 
 feature 'logging out' do
-  scenario 'begins with a logged out state'
+  scenario 'begins with a logged out state' do
+    visit '/'
+    expect(page).to have_content 'Login'
+  end
 
-  scenario 'doesn\'t show username on the homepage after logout'
+  scenario 'doesn\'t show username on the homepage after logout' do
+    user = FactoryBot.create(:user)
+    visit '/users/sign_in'
+    fill_in 'Email', with: "#{user.email}"
+    fill_in 'Password', with: "#{user.password}"
+    click_button 'Log in'
+    click_on 'Logout'
+    expect(page).to_not have_content 'user@example.com'
+  end
 
 end
