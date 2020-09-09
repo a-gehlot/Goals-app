@@ -5,11 +5,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <% if flash.alert %>
-    <div id=”error_explanation”>
-      <ul>
-        <li><%= flash.alert %></li>
-      </ul>
+    <% flash.each do |type, msg| %>
+    <div>
+      <%= msg %>
     </div>
     <% end %>
 

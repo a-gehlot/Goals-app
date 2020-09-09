@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resource :user do
-    resources :goals
+    resources :goals, except: [:show]
   end
-  root 'goals#index'
+
+  get '/goals', to: 'goals#homepage'
+
+  root 'goals#homepage'
 end

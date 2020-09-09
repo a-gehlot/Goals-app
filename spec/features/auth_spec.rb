@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'rails_helper'
 
 describe 'the signup process' do
+
   it 'has a new user page' do
     visit '/users/sign_up'
     expect(page).to have_content 'Sign up'
@@ -25,7 +26,7 @@ describe 'logging in' do
     fill_in 'Email', with: "#{user.email}"
     fill_in 'Password', with: "#{user.password}"
     click_button 'Log in'
-    expect(page).to have_content 'user@example.com'
+    expect(page).to have_content "#{user.email}"
   end
 
 end
