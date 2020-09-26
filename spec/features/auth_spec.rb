@@ -2,6 +2,11 @@ require 'spec_helper'
 require 'rails_helper'
 
 describe 'the signup process' do
+  
+after(:all) do 
+  Warden.test_reset!
+  User.delete_all
+end
 
   it 'has a new user page' do
     visit '/users/sign_up'

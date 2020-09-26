@@ -1,4 +1,8 @@
 <% @goals.each do |goal| %>
     <%= goal.goal_title %>
     <%= goal.description %>
+    <%= goal.public ? "Public" : "Private" %>
+    <%= goal.completed ? "Completed" : "Incomplete" %>
+    <%= button_to "Delete goal", user_goal_path(:id => goal.id), :method => :delete %>
 <% end %>
+
