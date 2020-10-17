@@ -4,7 +4,7 @@ include Warden::Test::Helpers
 
 RSpec.feature "Goals", type: :feature do
   describe 'CRUD of goals' do
-    after(:all) do 
+    after(:each) do 
       Warden.test_reset!
     end
 
@@ -15,7 +15,7 @@ RSpec.feature "Goals", type: :feature do
     
     describe 'creating goals' do
       it 'should allow a signed-in user to create a new goal' do
-        visit new_user_goal_path
+        visit new_goal_path
         fill_in 'Title', with: 'First goal!!'
         fill_in 'Description', with: 'Test description'
         select 'Public', from: 'goal_public'
@@ -27,7 +27,7 @@ RSpec.feature "Goals", type: :feature do
 
       context 'with a created goal' do
         before(:each) do
-          visit new_user_goal_path
+          visit new_goal_path
           fill_in 'Title', with: 'First goal!'
           fill_in 'Description', with: 'Test description'
           select 'Public', from: 'goal_public'
@@ -38,19 +38,19 @@ RSpec.feature "Goals", type: :feature do
 
           describe 'showing goals' do
             it 'should allow the user to see his/her goals' do
-              visit user_goals_path
+              visit user_path(@user)
               expect(page).to have_text('First goal!')
             end
           end
 
           describe 'updating goals' do
             it 'should bring user to the edit page' do
-              visit edit_user_goal_path(@user.goals.last)
+              visit edit_goal_path(@user.goals.last)
               expect(page).to have_text('Edit First goal!')
             end
 
             it 'should allow user to change goal' do
-              visit edit_user_goal_path(@user.goals.last)
+              visit edit_goal_path(@user.goals.last)
               fill_in 'Title', with: 'Updated goal'
               fill_in 'Description', with: 'Updated description'
               select 'Completed', from: 'goal_completed'
@@ -60,8 +60,9 @@ RSpec.feature "Goals", type: :feature do
 
             it 'should not allow a different user to update goal' do
               logout
-              login_as(FactoryBot.create(:user))
-              visit edit_user_goal_path(Goal.last)
+              @user = FactoryBot.create(:user)
+              login_as(@user)
+              visit edit_goal_path(Goal.last)
               expect(page).to_not have_text('Edit First goal!')
             end
 
@@ -69,8 +70,7 @@ RSpec.feature "Goals", type: :feature do
 
           describe 'deleting goals' do
             it 'should allow user to delete a goal' do
-              visit user_goals_path
-              save_and_open_page
+              visit user_path(@user)
               find_button('Delete').click
               expect(page).to_not have_text('First goal!')
             end

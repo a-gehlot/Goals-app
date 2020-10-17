@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :goal do
-    goal_title { 'This is my goal' }
-    description { 'My goal is to complete this rspec!' }
-    user
+    goal_title { Faker::Beer.name }
+    description { Faker::Beer.yeast }
+    association :user
   end
 end

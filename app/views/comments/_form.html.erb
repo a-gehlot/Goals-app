@@ -1,9 +1,0 @@
-<%= form_with(model: @goal, url: "#{action_url}") do |f| %>
-    <%= f.label :goal_title, "Title" %>
-    <%= f.text_field :goal_title %>
-    <%= f.label :description, "Description" %>
-    <%= f.text_area :description %>
-    <%= f.select(:public, [['Public', true], ['Private', false]]) %>
-    <%= f.select(:completed, [['Completed', true], ['Not Completed', false]]) %>
-    <%= f.submit "Submit" %>
-<% end %>

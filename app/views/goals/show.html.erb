@@ -3,3 +3,13 @@
 </h1>
 
 <%= @goal.attributes %>
+
+<% @goal.comments.each do |comment| %>
+    <%= comment.comment_text %>
+<% end %>
+
+<h2>
+    New Comment
+</h2>
+
+<%= render "shared/comments_form", commentable_type: "Goal", commentable_id: @goal.id %>

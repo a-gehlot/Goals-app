@@ -2,7 +2,7 @@ class GoalsController < ApplicationController
     before_action :check_user, only: [:edit, :destroy]
 
     def index
-        @goals = current_user.goals
+        @goals = Goal.all
         render :index
     end
 
@@ -15,7 +15,7 @@ class GoalsController < ApplicationController
     def create
         @goal = current_user.goals.new(goal_params)
         if @goal.save
-            redirect_to user_goals_path
+            redirect_to user_path(current_user.id)
             flash[:notice] = "Goal saved"
         else
             flash.now[:errors] = @goal.errors.full_messages
@@ -26,7 +26,7 @@ class GoalsController < ApplicationController
     def update
         @goal = Goal.find_by(id: params[:id])
         if @goal.update(goal_params)
-            redirect_to user_goals_path
+            redirect_to user_path(current_user.id)
             flash[:notice] = "Goal updated"
         else
             flash.now[:errors] = @goal.errors.full_messages
@@ -43,14 +43,15 @@ class GoalsController < ApplicationController
     def destroy
         @goal = Goal.find_by(id: params[:id])
         @goal.destroy
-        redirect_to user_goals_path
+        redirect_to user_path(current_user.id)
         flash[:notice] = "Goal deleted"
     end
 
-    def homepage
-        @goals = Goal.all
-        render :index
+    def show
+        @goal = Goal.find_by(id: params[:id])
+        render :show
     end
+
 
     private
 
@@ -61,7 +62,7 @@ class GoalsController < ApplicationController
     def check_user
         @user = Goal.find_by(id: params[:id]).user
         unless current_user == @user
-            redirect_to user_goals_path, notice: 'Incorrect user'
+            redirect_to user_path(@user.id), notice: 'Incorrect user'
         end
     end
 end
