@@ -1,5 +1,11 @@
 <% action_url = @goal.persisted? ? goal_path(@goal) : goals_path %>
 
+<% if action_url == goals_path %>
+    <h2> New goal </h2>
+<% else %>
+    <h2>Editing goal</h2>
+<% end %>
+
 <%= form_with(model: @goal, url: "#{action_url}") do |f| %>
     <%= f.label :goal_title, "Title" %>
     <%= f.text_field :goal_title %>

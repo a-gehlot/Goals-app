@@ -2,14 +2,20 @@
     Goals
 </h1>
 
-<%= @goal.attributes %>
+<h3>
+    <%= @goal.goal_title.capitalize %>
+</h3>
+<h4>Description: <%= @goal.description %> </h4>
+<h4>Visibility: <%= @goal.public ? "Public" : "Private" %> </h4>
+<%= @goal.completed ? "Completed" : "Incomplete" %>
+<br>
+<br>
+<%= button_to "Edit goal", edit_goal_path(:id => @goal.id), :method => :get %>
+<%= button_to "Delete goal", goal_path(:id => @goal.id), :method => :delete %>
+
 
 <% @goal.comments.each do |comment| %>
     <%= comment.comment_text %>
 <% end %>
-
-<h2>
-    New Comment
-</h2>
 
 <%= render "shared/comments_form", commentable_type: "Goal", commentable_id: @goal.id %>

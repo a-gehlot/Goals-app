@@ -1,20 +1,25 @@
-<%= @user.email %>
+<h1><%= @user.email %>'s Page</h1>
 
 <% @user.goals.each do |goal| %>
-    <%= goal.goal_title %>
-    <%= goal.description %>
-    <%= goal.public ? "Public" : "Private" %>
-    <%= goal.completed ? "Completed" : "Incomplete" %>
-    <%= button_to "Delete goal", goal_path(:id => goal.id), :method => :delete %>
+    <% if !goal.public? && current_user != @user %>
+        <% next %>
+    <% else %>
+        <h3>
+            <%=goal.goal_title.capitalize %>
+        </h3>
+        <h4>Description: <%= goal.description %> </h4>
+        <h4>Visibility: <%= goal.public ? "Public" : "Private" %> </h4>
+        <%= goal.completed ? "Completed" : "Incomplete" %>
+        <br>
+        <br>
+        <%= button_to "Edit goal", edit_goal_path(:id => goal.id), :method => :get %>
+        <%= button_to "Delete goal", goal_path(:id => goal.id), :method => :delete %>
+    <% end %>
 <% end %>
 
 
 <% @user.comments.each do |comment| %>
     <%= comment.comment_text %>
 <% end %>
-
-<h2>
-    New Comment
-</h2>
 
 <%= render "shared/comments_form", commentable_type: "User", commentable_id: @user.id %>
